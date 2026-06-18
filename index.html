@@ -55,7 +55,7 @@ body{
   z-index:0;
 }
 
-/* CAPA DE TEXTO */
+/* CONTENEDOR DE TEXTOS */
 
 #nombres{
 
@@ -74,9 +74,9 @@ body{
 
   top:35px;
 
-  left:130px;
+  left:120px;
 
-  width:1612px;
+  width:1632px;
 
   text-align:center;
 
@@ -86,7 +86,7 @@ body{
 
   line-height:1.2;
 
-  font-family:"filson-soft",sans-serif;
+  font-family:"filson-soft", sans-serif;
 
   font-weight:700;
 
@@ -103,11 +103,11 @@ body{
 
   position:absolute;
 
-  top:220px;
+  top:235px;
 
-  left:130px;
+  left:120px;
 
-  width:1612px;
+  width:1632px;
 
   text-align:center;
 
@@ -115,7 +115,7 @@ body{
 
   font-size:42px;
 
-  font-family:"filson-soft",sans-serif;
+  font-family:"filson-soft", sans-serif;
 
   font-weight:700;
 
@@ -139,11 +139,15 @@ body{
 
 <div class="contenedor">
 
+  <!-- VIDEO -->
+
   <video autoplay muted loop playsinline id="fondoVideo">
 
     <source src="fondo.mp4" type="video/mp4">
 
   </video>
+
+  <!-- TEXTOS -->
 
   <div id="nombres">
 
@@ -157,6 +161,8 @@ body{
 
 <script>
 
+/* ESCALADO */
+
 function escalarPantalla(){
 
   const escalaX = window.innerWidth / 1872;
@@ -166,21 +172,21 @@ function escalarPantalla(){
   const escala = Math.min(escalaX, escalaY);
 
   document.querySelector(".contenedor").style.transform =
-    `scale(${escala})`;
+  `scale(${escala})`;
 }
 
 window.addEventListener("resize", escalarPantalla);
 
 escalarPantalla();
 
+/* URL APPS SCRIPT */
+
 const url =
-"https://TU_URL_DEL_APPS_SCRIPT";
+"https://script.googleusercontent.com/macros/echo?user_content_key=AUkAhnR9sKMc4V_LT0YpJPKgHrTJdw0886LZpZCfFNDpmgqn_PWAkG04bVDbX9kRZgvbFEqfoXH3m59Qk4I-xa_oOHjfdYnsQVZEZGK-I4CHcEfwd6hcV7aFEe_RcBuls2LkfXbRrxyQ5Z0Ga_0Q4tYTUKnD148IiUGF0u1wOkY2LsiW_5PKXaTSE84s06IXxbrC52CGNkw2ZrPMqT1vigNBDcUHE2P6ld_vTvwYRaKn4lj6FagP0VZjSNexLfGeTOgNPvK-AFa0CvCvWO7wVAbZb8yo0mX2MQ&lib=MLNAcr3Jke4q8WCYQeQbKPKeEHa1C_Htb";
 
-const elNombre =
-document.querySelector(".nombre");
+const elNombre = document.querySelector(".nombre");
 
-const elDicho =
-document.querySelector(".dicho");
+const elDicho = document.querySelector(".dicho");
 
 fetch(url)
 
@@ -188,10 +194,13 @@ fetch(url)
 
 .then(data => {
 
+  console.log(data);
+
   if(!data || data.length === 0){
 
-    elDicho.textContent =
-    "No hay mensajes aprobados";
+    elNombre.textContent = "";
+
+    elDicho.textContent = "No hay mensajes aprobados";
 
     elDicho.classList.add("mostrar");
 
@@ -199,6 +208,25 @@ fetch(url)
   }
 
   let index = Math.floor(Math.random() * data.length);
+
+  function ajustarFuente(texto){
+
+    const longitud = texto.length;
+
+    if(longitud <= 50){
+
+      elDicho.style.fontSize = "48px";
+
+    }else if(longitud <= 90){
+
+      elDicho.style.fontSize = "42px";
+
+    }else{
+
+      elDicho.style.fontSize = "36px";
+
+    }
+  }
 
   function mostrarMensaje(){
 
@@ -210,15 +238,25 @@ fetch(url)
 
     setTimeout(() => {
 
+      const mensaje = item.mensaje || "";
+
+      ajustarFuente(mensaje);
+
       elNombre.textContent =
-      item.papa
-      ? item.papa.toUpperCase()
-      : "--";
+
+        item.papa
+
+        ? item.papa.toUpperCase()
+
+        : "--";
 
       elDicho.textContent =
-      item.mensaje
-      ? `"${item.mensaje}"`
-      : "";
+
+        mensaje
+
+        ? `"${mensaje}"`
+
+        : "";
 
       elNombre.classList.add("mostrar");
 
@@ -232,7 +270,6 @@ fetch(url)
 
       index = 0;
     }
-
   }
 
   mostrarMensaje();
@@ -245,8 +282,9 @@ fetch(url)
 
   console.error(error);
 
-  elDicho.textContent =
-  "Error cargando mensajes";
+  elNombre.textContent = "";
+
+  elDicho.textContent = "Error cargando mensajes";
 
   elDicho.classList.add("mostrar");
 
@@ -255,4 +293,5 @@ fetch(url)
 </script>
 
 </body>
+
 </html>
