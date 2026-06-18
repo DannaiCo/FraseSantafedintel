@@ -1,108 +1,258 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <title>semanasanta</title>
 
-    <!-- Fuente correcta -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap" rel="stylesheet" />
+<head>
 
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        background: #000;
-        width: 100%;
-        height: 100%;
-      }
+<meta charset="UTF-8">
 
-      .contenedor-total {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 1872px;
-        height: 312px;
-        transform-origin: top left;
-      }
+<title>Día del Padre - iCo Medios</title>
 
-      video#fondo {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 1872px;
-        height: 312px;
-        object-fit: cover;
-        z-index: 0;
-      }
+<meta http-equiv="refresh" content="180">
 
-      .contenedor-frase {
-        position: absolute;
-        top: 21px;
-        left: 1100px;
-        width: 628px;
-        height: 274px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        z-index: 1;
-      }
+<link rel="stylesheet" href="https://use.typekit.net/vsp7vcb.css">
 
-      #frase {
-        font-size: 50px;
-        color: white;
-        font-family: "Dela Gothic One", sans-serif;
-        letter-spacing: 2px;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="contenedor-total" id="contenedor">
-      <video id="fondo" autoplay muted loop playsinline>
-        <source src="fondo.mp4" type="video/mp4" />
-      </video>
+<style>
 
-      <div class="contenedor-frase">
-        <div id="frase">Cargando frase...</div>
-      </div>
-    </div>
+html,
+body{
 
-    <script>
-      const frases = [
-        "Aún estás a tiempo de empezar de nuevo.",
-        "Perdonar también te libera.",
-        "Agradecer cambia el día.",
-        "Alguien necesita tu ayuda hoy.",
-        "Una palabra amable cambia el día.",
-        "Hoy puedes elegir la calma.",
-        "Lo simple también transforma.",
-        "Ayudar también te cambia.",
-        "Un momento de silencio ayuda."
-      ];
+  margin:0;
+  padding:0;
 
-      const elemento = document.getElementById("frase");
+  width:100%;
+  height:100%;
 
-      function cambiarFrase() {
-        const randomIndex = Math.floor(Math.random() * frases.length);
-        elemento.textContent = frases[randomIndex];
-      }
+  overflow:hidden;
 
-      cambiarFrase();
-      setInterval(cambiarFrase, 10000);
+  background:#ffffff;
+}
 
-      function escalarPantalla() {
-        const escalaX = window.innerWidth / 1872;
-        const escalaY = window.innerHeight / 312;
-        const escala = Math.min(escalaX, escalaY);
-        document.getElementById("contenedor").style.transform = `scale(${escala})`;
-      }
+.contenedor{
 
-      window.addEventListener("resize", escalarPantalla);
-      escalarPantalla();
-    </script>
-  </body>
+  position:relative;
+
+  width:1872px;
+  height:312px;
+
+  overflow:hidden;
+
+  transform-origin:top left;
+}
+
+/* VIDEO */
+
+#fondoVideo{
+
+  position:absolute;
+
+  inset:0;
+
+  width:100%;
+  height:100%;
+
+  object-fit:cover;
+
+  z-index:0;
+}
+
+/* CAPA DE TEXTO */
+
+#nombres{
+
+  position:absolute;
+
+  inset:0;
+
+  z-index:5;
+}
+
+/* MENSAJE */
+
+.dicho{
+
+  position:absolute;
+
+  top:35px;
+
+  left:130px;
+
+  width:1612px;
+
+  text-align:center;
+
+  color:#0000EC;
+
+  font-size:48px;
+
+  line-height:1.2;
+
+  font-family:"filson-soft",sans-serif;
+
+  font-weight:700;
+
+  font-style:normal;
+
+  opacity:0;
+
+  transition:opacity .8s ease;
+}
+
+/* NOMBRE PAPÁ */
+
+.nombre{
+
+  position:absolute;
+
+  top:220px;
+
+  left:130px;
+
+  width:1612px;
+
+  text-align:center;
+
+  color:#0000EC;
+
+  font-size:42px;
+
+  font-family:"filson-soft",sans-serif;
+
+  font-weight:700;
+
+  font-style:normal;
+
+  opacity:0;
+
+  transition:opacity .8s ease;
+}
+
+.mostrar{
+
+  opacity:1;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="contenedor">
+
+  <video autoplay muted loop playsinline id="fondoVideo">
+
+    <source src="fondo.mp4" type="video/mp4">
+
+  </video>
+
+  <div id="nombres">
+
+    <div class="dicho"></div>
+
+    <div class="nombre"></div>
+
+  </div>
+
+</div>
+
+<script>
+
+function escalarPantalla(){
+
+  const escalaX = window.innerWidth / 1872;
+
+  const escalaY = window.innerHeight / 312;
+
+  const escala = Math.min(escalaX, escalaY);
+
+  document.querySelector(".contenedor").style.transform =
+    `scale(${escala})`;
+}
+
+window.addEventListener("resize", escalarPantalla);
+
+escalarPantalla();
+
+const url =
+"https://TU_URL_DEL_APPS_SCRIPT";
+
+const elNombre =
+document.querySelector(".nombre");
+
+const elDicho =
+document.querySelector(".dicho");
+
+fetch(url)
+
+.then(response => response.json())
+
+.then(data => {
+
+  if(!data || data.length === 0){
+
+    elDicho.textContent =
+    "No hay mensajes aprobados";
+
+    elDicho.classList.add("mostrar");
+
+    return;
+  }
+
+  let index = Math.floor(Math.random() * data.length);
+
+  function mostrarMensaje(){
+
+    const item = data[index];
+
+    elNombre.classList.remove("mostrar");
+
+    elDicho.classList.remove("mostrar");
+
+    setTimeout(() => {
+
+      elNombre.textContent =
+      item.papa
+      ? item.papa.toUpperCase()
+      : "--";
+
+      elDicho.textContent =
+      item.mensaje
+      ? `"${item.mensaje}"`
+      : "";
+
+      elNombre.classList.add("mostrar");
+
+      elDicho.classList.add("mostrar");
+
+    },300);
+
+    index++;
+
+    if(index >= data.length){
+
+      index = 0;
+    }
+
+  }
+
+  mostrarMensaje();
+
+  setInterval(mostrarMensaje,5000);
+
+})
+
+.catch(error => {
+
+  console.error(error);
+
+  elDicho.textContent =
+  "Error cargando mensajes";
+
+  elDicho.classList.add("mostrar");
+
+});
+
+</script>
+
+</body>
 </html>
